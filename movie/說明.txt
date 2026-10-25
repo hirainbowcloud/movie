@@ -1,0 +1,35 @@
+
+//===========================================
+{
+ "title": "星際探險隊4",
+ "durationMin": 166,
+ "rating": "普遍級",
+ "synopsis": "西元 2150 年，一支由五名年輕太空人組成的探險隊，奉命前往銀河邊緣調查一顆突然發出訊號的神秘行星。旅途中，他們必須面對隕石風暴、失靈的導航系統，以及彼此之間的不信任。當真相揭曉，他們才發現這顆行星的秘密，關係著地球的未來。",
+ "director": "陳志遠",
+ "actors": "林子翔, 許雅晴, 王大衛, 張美玲",
+ "genre": "科幻",
+ "releaseDate": "2026-10-26",
+ "trailerUrl": "",
+ "isActive": true
+}
+
+
+[
+    {
+         "imageUrl": "",
+         "imageType": "poster",
+         "sortOrder": 0
+    },
+    {
+         "imageUrl": "",
+         "imageType": "still",
+         "sortOrder": 0
+    }
+]
+
+
+		
+http://localhost:8080/images/uploads/abc.jpg
+->D:/webJava/movie_assets/static/images/uploads/abc.jpg
+->http://localhost:8080/images/movies/1/poster.jpg
+    
