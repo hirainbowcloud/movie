@@ -39,10 +39,25 @@ public class AdminService {
 				.orElseThrow(() -> new AdminNotFoundException(id));
 	}
 	
+	public List<Admin> searchByKeyword(String keyword)
+	{
+		if(keyword == null || keyword.isBlank())
+		{
+			return adminRepository.findAll();
+		}
+		return adminRepository.searchByKeyword(keyword);
+	}
+	
 	@Transactional
 	public Admin create(Admin admin)
 	{
+		Optional<Admin> ad = adminRepository.findByUsername(admin.getUsername());
+		if(ad.isPresent())
+		{
+			throw new IllegalArgumentException("帳號已存在：" + admin.getUsername());
+		}
 		return adminRepository.save(admin);
+		
 	}
 	
 	@Transactional
@@ -55,5 +70,27 @@ public class AdminService {
 		}
 		
 		return ad;
+	}
+	
+	@Transactional
+	public Admin update(Integer adminId, Admin admin)
+	{
+		Admin existing = adminRepository.findById(adminId)
+				.orElseThrow(() -> new AdminNotFoundException(adminId));
+		
+		Optional<Admin> sameName = adminRepository.findByUsername(admin.getUsername());
+		   if (sameName.isPresent() && !sameName.get().getAdminId().equals(admin.adminId)) {
+		       throw new IllegalArgumentException("帳號已被使用：" + admin.getUsername());
+		   }
+		   
+		existing.setUsername(admin.getUsername());
+		existing.setName(admin.getName());
+		
+		if (admin.getPassword() != null && !admin.getPassword().isBlank()) {
+	        existing.setPassword(admin.getPassword());
+	    }
+
+	    return adminRepository.save(existing);
+		
 	}
 }

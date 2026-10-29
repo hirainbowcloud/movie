@@ -10,10 +10,8 @@ public class AdminResponse {
 
 	private Integer adminId;
 	
-	@NotBlank(message = "使用者名稱不得為空值")
 	private String username;	
 	
-	@NotBlank(message = "職稱不得為空值")
 	private String name;
 	
 	public static AdminResponse from(Admin admin)

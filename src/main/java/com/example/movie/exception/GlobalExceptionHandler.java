@@ -36,6 +36,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleNotFound(ProductNotFoundException e) {
         return buildError(HttpStatus.NOT_FOUND, e.getMessage());
     }
+    
+    // 捕獲：管理員不存在（404）  ← 新增這段
+    @ExceptionHandler(AdminNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleAdminNotFound(AdminNotFoundException e) {
+        return buildError(HttpStatus.NOT_FOUND, e.getMessage());
+    }
 
     // 捕獲：業務規則違反（400，如：商品名稱重複）
     @ExceptionHandler(IllegalArgumentException.class)
@@ -74,4 +80,6 @@ public class GlobalExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         return ResponseEntity.status(status).body(body);
     }
+    
+    
 }
