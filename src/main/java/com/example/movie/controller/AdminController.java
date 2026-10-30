@@ -25,38 +25,14 @@ import com.example.movie.model.Admin;
 public class AdminController {
 
 	@Autowired
-	AdminService adminSrv;
+	AdminService adminSrv;	
 
 	@GetMapping("/page")
 	public ResponseEntity<String> page(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		return ResponseEntity.ok("page=" + page + ", size=" + size);
 	}
-
-	@GetMapping("/search")
-	public ResponseEntity<List<AdminResponse>> search(@RequestParam(required = false) String keyword) {
-		List<AdminResponse> result = adminSrv.searchByKeyword(keyword)
-				.stream()
-				.map(AdminResponse::from)
-				.toList();
-		if (result.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(result);
-	}
-
-	@GetMapping("/search/{name}")
-	public ResponseEntity<List<AdminResponse>> findByName(@PathVariable String name) {
-		List<AdminResponse> result = adminSrv.findByName(name)
-				.stream()
-				.map(AdminResponse::from)
-				.toList();
-		if (result.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(result);
-	}
-
+	
 	@GetMapping("/list")
 	public ResponseEntity<?> list(@RequestParam(required = false) String username) {
 		if (username == null) {
@@ -74,6 +50,20 @@ public class AdminController {
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
+
+
+	@GetMapping("/search")
+	public ResponseEntity<List<AdminResponse>> search(@RequestParam(required = false) String keyword) {
+		//http://localhost:8080/api/admin/search?keyword=
+		List<AdminResponse> result = adminSrv.searchByKeyword(keyword)
+				.stream()
+				.map(AdminResponse::from)
+				.toList();
+		if (result.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(result);
+	}	
 
 	@DeleteMapping("/{username}")
 	public ResponseEntity<AdminResponse> delete(@PathVariable String username) {
