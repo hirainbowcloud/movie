@@ -13,9 +13,6 @@ public final class PasswordUtil {
 		
 		try 
 		{
-			//using var sha = SHA256.Create();
-			//byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));
-			//Convert.ToHexString(hash).ToLower();
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] hash = md.digest(raw.getBytes(StandardCharsets.UTF_8));
 			return HexFormat.of().formatHex(hash);

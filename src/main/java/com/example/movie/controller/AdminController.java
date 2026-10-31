@@ -3,6 +3,7 @@ package com.example.movie.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.movie.dao.AdminService;
-import com.example.movie.dto.AdminCreateRequest;
+import com.example.movie.dto.AdminRequest;
 import com.example.movie.dto.AdminResponse;
+import com.example.movie.dto.PageResponse;
 import com.example.movie.model.Admin;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -27,23 +31,19 @@ public class AdminController {
 	@Autowired
 	AdminService adminSrv;	
 
-	@GetMapping("/page")
-	public ResponseEntity<String> page(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
-		return ResponseEntity.ok("page=" + page + ", size=" + size);
-	}
-	
-	@GetMapping("/list")
-	public ResponseEntity<?> list(@RequestParam(required = false) String username) {
+	@GetMapping
+	public ResponseEntity<?> list
+	(@RequestParam(required = false) String username,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) 
+	{
 		if (username == null) {
-			List<AdminResponse> result = adminSrv.findAll()
-					.stream()
-					.map(AdminResponse::from)
-					.toList();
+			Page<AdminResponse> result = adminSrv.findAll(page, size)
+					.map(AdminResponse::from);
 			if (result.isEmpty()) {
 				return ResponseEntity.notFound().build();
 			}
-			return ResponseEntity.ok(result);
+			return ResponseEntity.ok(PageResponse.from(result));
 		}
 		return adminSrv.findByUsername(username)
 				.map(AdminResponse::from)
@@ -51,22 +51,24 @@ public class AdminController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-
 	@GetMapping("/search")
-	public ResponseEntity<List<AdminResponse>> search(@RequestParam(required = false) String keyword) {
-		//http://localhost:8080/api/admin/search?keyword=
-		List<AdminResponse> result = adminSrv.searchByKeyword(keyword)
-				.stream()
-				.map(AdminResponse::from)
-				.toList();
+	public ResponseEntity<PageResponse<AdminResponse>> search
+	(@RequestParam(required = false) String keyword,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) 
+	{
+		//http://localhost:8080/api/admin/search?keyword=&page=1&size=10
+		Page<AdminResponse> result = adminSrv.searchByKeyword(keyword, page, size)
+				.map(AdminResponse::from);
 		if (result.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(PageResponse.from(result));
 	}	
 
 	@DeleteMapping("/{username}")
-	public ResponseEntity<AdminResponse> delete(@PathVariable String username) {
+	public ResponseEntity<AdminResponse> delete(@PathVariable String username) 
+	{
 		return adminSrv.delete(username)
 				.map(AdminResponse::from)
 				.map(ResponseEntity::ok)
@@ -74,7 +76,8 @@ public class AdminController {
 	}
 
 	@PostMapping
-	public ResponseEntity<AdminResponse> create(AdminCreateRequest req) {
+	public ResponseEntity<AdminResponse> create(@Valid @RequestBody AdminRequest req) 
+	{
 		Admin saved = adminSrv.create(req.toEntity());
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -82,8 +85,11 @@ public class AdminController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<AdminResponse> update(@PathVariable int id, @RequestBody Admin admin) {
+	public ResponseEntity<AdminResponse> update
+	(@PathVariable int id, @RequestBody Admin admin) 
+	{
 	    Admin updated = adminSrv.update(id, admin);
 	    return ResponseEntity.ok(AdminResponse.from(updated));
 	}
+	
 }
