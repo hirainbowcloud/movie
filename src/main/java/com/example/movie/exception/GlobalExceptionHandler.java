@@ -33,6 +33,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
 	}
 
+	@ExceptionHandler(HallNotFoundException.class)
+	public ResponseEntity<String> handleHallNotFound(HallNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
+	}
+
 	@ExceptionHandler(UsernameAlreadyExistsException.class)
 	public ResponseEntity<String> handleUsernameExists(UsernameAlreadyExistsException e) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // 409

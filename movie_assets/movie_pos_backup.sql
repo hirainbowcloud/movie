@@ -1,11 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `movie_pos` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `movie_pos`;
 -- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
 -- Host: localhost    Database: movie_pos
 -- ------------------------------------------------------
 -- Server version	8.0.46
-
-CREATE DATABASE IF NOT EXISTS `movie_pos` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `movie_pos`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +31,7 @@ CREATE TABLE `admin` (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `uk_admin_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系統管理者';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系統管理者';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +40,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'admin','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','系統管理員'),(2,'manager','866485796cfa8d7c0cf7111640205b83076433547577511d81f8030ae99ecea5','經理');
+INSERT INTO `admin` VALUES (1,'admin','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','系統管理員'),(2,'manager','866485796cfa8d7c0cf7111640205b83076433547577511d81f8030ae99ecea5','經理'),(4,'engineer','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','系統管理員');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,13 +52,13 @@ DROP TABLE IF EXISTS `hall`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hall` (
-  `hall_id` int NOT NULL,
+  `hall_id` int NOT NULL AUTO_INCREMENT,
   `hall_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `row_count` int NOT NULL DEFAULT '10' COMMENT '排數(至少10排)',
   `first_row_seats` int NOT NULL DEFAULT '8' COMMENT '第一排座位數',
   PRIMARY KEY (`hall_id`),
   CONSTRAINT `ck_hall_rows` CHECK ((`row_count` >= 10))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='影廳';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='影廳';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +88,7 @@ CREATE TABLE `member` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `uk_member_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='會員';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='會員';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +97,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'user01','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4','王小明','0912345678','user01@example.com','2026-09-28 19:04:36'),(2,'user02','55c8079ac96c6a4f6a94e3460c79e4006d62374cce6e9fc8b281938a3abc7627','林敏綺','0988777666','user02@example.com','2026-09-28 19:04:36'),(3,'kiki','888da5db853449fff82b07cbdbf7c755ece0783aa670bb36cc5c4cc9a68fb864','rainbow','0866555111','kiki@gmail.com','2026-09-28 19:32:48');
+INSERT INTO `member` VALUES (1,'user01','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4','王小明','0912345678','user01@example.com','2026-09-28 19:04:36'),(2,'user02','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','林敏綺','0988777666','user02@example.com','2026-09-28 19:04:36'),(3,'kiki','888da5db853449fff82b07cbdbf7c755ece0783aa670bb36cc5c4cc9a68fb864','rainbow','0866555111','kiki@gmail.com','2026-09-28 19:32:48');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,17 +290,9 @@ CREATE TABLE `ticket_type` (
 
 LOCK TABLES `ticket_type` WRITE;
 /*!40000 ALTER TABLE `ticket_type` DISABLE KEYS */;
-INSERT INTO `ticket_type` VALUES (1,'VIP票',200,0.80,'200元打8折'),(2,'一般票',200,1.00,'200元'),(3,'團體票',200,0.90,'200元打9折'),(4,'爆米花+飲料+一般票套餐',300,1.00,'套餐300元');
+INSERT INTO `ticket_type` VALUES (1,'VIP票',150,0.50,'一般票價格*5折'),(2,'一般票',300,1.00,'不打折'),(3,'團體票',280,0.80,'一般票價格*8折'),(4,'雙人票與雙人套餐(爆米花+飲料)',790,1.00,'套餐790元');
 /*!40000 ALTER TABLE `ticket_type` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'movie_pos'
---
-
---
--- Dumping routines for database 'movie_pos'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -312,4 +303,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-30 22:55:32
+-- Dump completed on 2026-10-31 22:40:35
