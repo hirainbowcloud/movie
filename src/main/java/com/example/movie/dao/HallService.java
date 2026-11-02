@@ -1,6 +1,10 @@
 package com.example.movie.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,8 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.movie.exception.HallNotFoundException;
+import com.example.movie.exception.MovieNotFoundException;
 import com.example.movie.Repository.HallRepository;
+import com.example.movie.Repository.MovieRepository;
+import com.example.movie.Repository.ShowtimeRepository;
 import com.example.movie.model.Hall;
+import com.example.movie.model.Movie;
+import com.example.movie.model.ShowTime;
 
 @Service
 public class HallService {
@@ -20,10 +29,11 @@ public class HallService {
 	@Autowired
 	HallRepository hallRepository;
 	
-	public Page<Hall> findAll(int page, int size)
-	{
-		return hallRepository.findAll(buildPageable(page, size));
-	}
+	@Autowired
+	MovieRepository movieRepository;
+	
+	@Autowired
+	ShowtimeRepository showtimeRepository;
 	
 	private Pageable buildPageable(int page, int size)
 	{
@@ -33,6 +43,12 @@ public class HallService {
 		//Spring 的PageRequest 的第1頁，是從0開始計算
 		return PageRequest.of(page - 1, size, Sort.by("hallId").ascending());
 	}
+	
+	public Page<Hall> findAll(int page, int size)
+	{
+		return hallRepository.findAll(buildPageable(page, size));
+	}
+	
 	
 	public Optional<Hall> findByHallName(String hallName)
 	{
@@ -67,8 +83,6 @@ public class HallService {
 		
 	}
 	
-	// 已經有場次（showtime）使用的影廳，資料庫外鍵會擋下刪除
-	// → DataIntegrityViolationException → GlobalExceptionHandler 回 400	
 	//在 @Transactional 方法裡，呼叫 delete() 時 
 	//JPA 不會馬上對資料庫執行 DELETE。它會先記下來，等方法結束、交易 commit 時才一起執行。
 	@Transactional
@@ -102,5 +116,40 @@ public class HallService {
 
 	    return hallRepository.save(existing);
 		
+	}
+	
+	@Transactional
+	public List<ShowTime> createWithShowtimes(Hall hall, List<ShowTime> items)
+	{
+		Hall saveHall = create(hall);
+		Set<String> times = new HashSet<>();
+		List<ShowTime> result = new ArrayList<>();
+		
+		for(ShowTime show: items)
+		{
+			Movie movie = movieRepository.findById(show.getMovieId())
+				  .orElseThrow(() -> new MovieNotFoundException(show.getMovieId()));
+			
+			if(show.getShowDate().isBefore(movie.getReleaseDate()))
+			{
+				throw new IllegalArgumentException(
+					movie.getTitle() + " 的放映日期不能早於上映日期：" + movie.getReleaseDate());
+			}
+			
+			String key = show.getShowDate()+" "+show.getStartTime();
+			if(!times.add(key))
+			{
+				throw new IllegalArgumentException("場次時間重複：" + key);
+			}
+			
+			ShowTime s = new ShowTime();
+			s.setMovie(movie); 
+			s.setHall(saveHall);
+			s.setShowDate(show.getShowDate());
+			s.setStartTime(show.getStartTime());
+			result.add(showtimeRepository.save(s));
+		}
+		
+		return result;
 	}
 }

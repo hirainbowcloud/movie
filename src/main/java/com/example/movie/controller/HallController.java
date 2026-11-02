@@ -1,5 +1,7 @@
 package com.example.movie.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,8 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.movie.dao.HallService;
 import com.example.movie.dto.HallRequest;
 import com.example.movie.dto.HallResponse;
+import com.example.movie.dto.HallWithShowtimeResponse;
+import com.example.movie.dto.HallWithShowtimesRequest;
 import com.example.movie.dto.PageResponse;
+import com.example.movie.dto.ShowtimeResponse;
 import com.example.movie.model.Hall;
+import com.example.movie.model.ShowTime;
 
 import jakarta.validation.Valid;
 
@@ -98,6 +104,20 @@ public class HallController {
 	{
 	    Hall updated = hallSrv.update(id, req.toEntity());
 	    return ResponseEntity.ok(HallResponse.from(updated));
+	}
+	
+	// POST /api/hall/with-showtimes：一次新增影廳 + 場次
+	@PostMapping("/with-showtimes")
+	public ResponseEntity<HallWithShowtimeResponse> createWithShowtimes
+	(@Valid @RequestBody HallWithShowtimesRequest req)
+	{
+		List<ShowTime> saved = hallSrv.createWithShowtimes(
+				req.getHall().toEntity(), req.toShowtimeEntities());
+
+		HallWithShowtimeResponse res = new HallWithShowtimeResponse();
+		res.setHall(HallResponse.from(saved.get(0).getHall()));   // 每個場次都屬於同一個新影廳
+		res.setShowtimes(saved.stream().map(ShowtimeResponse::from).toList());
+		return ResponseEntity.status(HttpStatus.CREATED).body(res);
 	}
 	
 }

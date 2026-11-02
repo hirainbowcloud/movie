@@ -38,6 +38,26 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
 	}
 
+	@ExceptionHandler(ShowtimeNotFoundException.class)
+	public ResponseEntity<String> handleShowtimeNotFound(ShowtimeNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
+	}
+
+	@ExceptionHandler(TicketTypeNotFoundException.class)
+	public ResponseEntity<String> handleTicketTypeNotFound(TicketTypeNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
+	}
+
+	@ExceptionHandler(OrdersNotFoundException.class)
+	public ResponseEntity<String> handleOrdersNotFound(OrdersNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
+	}
+
+	@ExceptionHandler(TicketNotFoundException.class)
+	public ResponseEntity<String> handleTicketNotFound(TicketNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404
+	}
+
 	@ExceptionHandler(UsernameAlreadyExistsException.class)
 	public ResponseEntity<String> handleUsernameExists(UsernameAlreadyExistsException e) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // 409

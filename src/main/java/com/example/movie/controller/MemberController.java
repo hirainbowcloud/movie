@@ -30,17 +30,6 @@ import com.example.movie.util.PasswordUtil;
 public class MemberController {
 	@Autowired
 	MemberService srv;
-
-	@GetMapping
-	public ResponseEntity<PageResponse<MemberFindAllResponse>> findAll
-	(
-			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10") int size) 
-	{
-		Page<MemberFindAllResponse> result = srv.findAll(page, size)
-				.map(MemberFindAllResponse::from);
-		return ResponseEntity.ok(PageResponse.from(result));
-	}
 	
 	@GetMapping("/search")
 	public ResponseEntity<PageResponse<MemberFindAllResponse>> searchByKeyword
@@ -60,6 +49,17 @@ public class MemberController {
 
 	    return ResponseEntity.ok(PageResponse.from(result));
 	}
+
+	@GetMapping
+	public ResponseEntity<PageResponse<MemberFindAllResponse>> findAll
+	(
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) 
+	{
+		Page<MemberFindAllResponse> result = srv.findAll(page, size)
+				.map(MemberFindAllResponse::from);
+		return ResponseEntity.ok(PageResponse.from(result));
+	}	
 	
 
 	@PutMapping("/{id}")
