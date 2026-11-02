@@ -78,4 +78,10 @@ public class MemberService {
 		rep.delete(member);
 		return member;
 	}
+	
+	public Optional<Member> login(String username, String password)
+	{
+		return rep.findByUsername(username)
+				.filter(m -> m.getPassword().equals(PasswordUtil.sha256(password)));
+	}
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.movie.exception.AdminNotFoundException;
 import com.example.movie.Repository.AdminRepository;
 import com.example.movie.model.Admin;
+import com.example.movie.model.Member;
 import com.example.movie.util.PasswordUtil;
 
 @Service
@@ -107,5 +108,11 @@ public class AdminService {
 
 	    return adminRepository.save(existing);
 		
+	}
+	
+	public Optional<Admin> login(String username, String password)
+	{
+		return adminRepository.findByUsername(username)
+				.filter(m -> m.getPassword().equals(PasswordUtil.sha256(password)));
 	}
 }

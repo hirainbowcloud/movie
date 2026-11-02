@@ -1,6 +1,8 @@
 package com.example.movie.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.movie.dao.MemberService;
 import com.example.movie.dto.MemberResponse;
+import com.example.movie.dto.LoginRequest;
 import com.example.movie.dto.MemberFindAllResponse;
 import com.example.movie.dto.MemberRequest;
 import com.example.movie.dto.MemberUpdateResponse;
 import com.example.movie.dto.PageResponse;
 import com.example.movie.model.Member;
 import com.example.movie.util.PasswordUtil;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/member")
@@ -90,5 +95,18 @@ public class MemberController {
 		Member memberObj = srv.delete(memberId);			
 		MemberResponse res = MemberResponse.from(memberObj);
 		return ResponseEntity.ok(res);
-	}	 
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req)
+	{
+		Optional<Member> member = srv.login(req.getUsername(), req.getPassword());
+		if(member.isEmpty())
+		{
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(Map.of("status", 401, "error", "帳號或密碼錯誤"));
+		}
+		
+		return ResponseEntity.ok(MemberResponse.from(member.get()));
+	}
 }

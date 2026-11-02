@@ -1,5 +1,7 @@
 package com.example.movie.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -80,5 +82,16 @@ public class ShowtimeController {
 	{
 		ShowTime updated = showtimeSrv.update(id, req.toEntity());
 		return ResponseEntity.ok(ShowtimeResponse.from(updated));
+	}
+	
+	// GET /api/showtime/upcoming?movieId=1 → 今天以後的場次（購票人用）電影介紹與場次頁
+	@GetMapping("/upcoming")
+	public ResponseEntity<List<ShowtimeResponse>> upcoming(@RequestParam Integer movieId)
+	{
+		List<ShowtimeResponse> result = showtimeSrv.findUpcomingByMovieId(movieId)
+				.stream()
+				.map(ShowtimeResponse::from)
+				.toList();
+		return ResponseEntity.ok(result);
 	}
 }

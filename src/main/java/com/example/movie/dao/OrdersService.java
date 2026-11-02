@@ -30,6 +30,9 @@ import com.example.movie.model.ShowTime;
 import com.example.movie.model.Ticket;
 import com.example.movie.model.TicketType;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 // 購票流程：一筆訂單 + N 張票，在同一個交易裡一起存
 @Service
 public class OrdersService {
@@ -48,6 +51,10 @@ public class OrdersService {
 
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@PersistenceContext //JPA的EntityManager
+	private EntityManager em;   // 新增：用來重新讀取資料庫的資料
+	//EntityManager 型別，JPA提供的類別 em是慣用寫法
 
 	private Pageable buildPageable(int page, int size)
 	{
@@ -59,12 +66,14 @@ public class OrdersService {
 	}
 
 	// 管理者：查詢全部訂單
+	@Transactional(readOnly = true)
 	public Page<Orders> findAll(int page, int size)
 	{
 		return ordersRepository.findAll(buildPageable(page, size));
 	}
 
 	// 購票人：查詢自己的訂單
+	@Transactional(readOnly = true)
 	public Page<Orders> findByMemberId(Integer memberId, int page, int size)
 	{
 		return ordersRepository.findByMemberId(memberId, buildPageable(page, size));
@@ -84,14 +93,14 @@ public class OrdersService {
 	@Transactional
 	public Orders create(Orders form, List<Ticket> items)
 	{
-		// 1-1. 會員、場次要存在
+		// 檢查會員、場次要存在
 		Member member = memberRepository.findById(form.getMemberId())
 				.orElseThrow(() -> new MemberNotFoundException(form.getMemberId()));
 		ShowTime showtime = showtimeRepository.findById(form.getShowtimeId())
 				.orElseThrow(() -> new ShowtimeNotFoundException(form.getShowtimeId()));
 		Hall hall = showtime.getHall();
 
-		// 1-2. 至少要買一張票
+		// 至少要買一張票
 		if (items == null || items.isEmpty())
 		{
 			throw new IllegalArgumentException("至少要選一個座位");
@@ -100,7 +109,7 @@ public class OrdersService {
 		Orders order = new Orders();
 		order.setMember(member);         // 寫入 member_id
 		order.setShowtime(showtime);     // 寫入 showtime_id
-		order.setOrderTime(LocalDateTime.now());
+		//order.setOrderTime(LocalDateTime.now()); // 下單時間給資料庫自動產生
 
 		int originalAmount = 0;
 		int totalAmount = 0;
@@ -108,7 +117,7 @@ public class OrdersService {
 
 		for (Ticket item : items)
 		{
-			// 1-3. 座位檢查
+			// 座位檢查
 			checkSeat(hall, item);
 
 			String seatKey = item.getRowNo() + "-" + item.getSeatNo();
@@ -123,11 +132,10 @@ public class OrdersService {
 				throw new IllegalArgumentException("座位已售出：第" + item.getRowNo() + "排第" + item.getSeatNo() + "號");
 			}
 
-			// 1-4. 票種要存在
+			// 確認TicketType
 			TicketType type = ticketTypeRepository.findById(item.getTypeId())
 					.orElseThrow(() -> new IllegalArgumentException("票種不存在：" + item.getTypeId()));
 
-			// 2. 計算這張票的價格
 			Ticket ticket = new Ticket();
 			ticket.setShowtime(showtime);       // 寫入 showtime_id
 			ticket.setTicketType(type);         // 寫入 type_id
@@ -137,17 +145,26 @@ public class OrdersService {
 			ticket.setOriginalPrice(calcOriginalPrice(type));   // 原價
 			order.addTicket(ticket);            // 寫入 order_id
 
-			originalAmount += ticket.getOriginalPrice();
-			totalAmount += ticket.getPrice();
+			originalAmount += ticket.getOriginalPrice(); //累計原價
+			totalAmount += ticket.getPrice(); //累計實際售價
 		}
 
-		// 3. 訂單金額 = 所有票加總
-		order.setOriginalAmount(originalAmount);
-		order.setTotalAmount(totalAmount);
-		order.setDiscountAmount(originalAmount - totalAmount);
+		// 整張訂單金額總計
+		order.setOriginalAmount(originalAmount); // 整張訂單的原價
+		order.setTotalAmount(totalAmount); // 整張訂單的實際售價
+		order.setDiscountAmount(originalAmount - totalAmount); // 整張訂單的折扣金額
 
-		// 4. 存訂單（cascade = ALL，票會一起存）
-		return ordersRepository.save(order);
+		// 存訂單（cascade = ALL，票會一起存）
+		//return ordersRepository.save(order);
+		
+		Orders saved = ordersRepository.saveAndFlush(order); // 立刻送出 INSERT
+		em.refresh(saved);                                   // 從資料庫讀回 order_time
+		return saved;
+		
+		/*
+		 * save() 不保證會馬上寫進資料庫，JPA 可能等交易結束才一起送出。
+		 * saveAndFlush() 會立刻執行 INSERT，這時資料庫已經依 DEFAULT CURRENT_TIMESTAMP 
+		 * 產生了 order_time。*/
 	}
 
 	// 座位要在影廳範圍內：排數 1 ~ row_count，座號至少 1

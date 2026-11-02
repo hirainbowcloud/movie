@@ -1,5 +1,6 @@
 package com.example.movie.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,17 @@ public class TicketTypeService {
 		if (page < 1) page = 1;
 		if (size < 1 || size > 100) size = 10;
 
-		//Spring 的PageRequest 的第1頁，是從0開始計算
 		return PageRequest.of(page - 1, size, Sort.by("typeId").ascending());
 	}
 
+	@Transactional(readOnly = true)
 	public Page<TicketType> findAll(int page, int size)
 	{
+		/*
+		 * Page<TicketType> result =
+		 * ticketTypeRepository.findAll(buildPageable(page,size)); if(!result.isEmpty())
+		 * { return result; }
+		 */		
 		return ticketTypeRepository.findAll(buildPageable(page, size));
 	}
 

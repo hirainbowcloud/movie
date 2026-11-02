@@ -1,15 +1,18 @@
 package com.example.movie.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.example.movie.model.Orders;
+import com.example.movie.model.ShowTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Data;
 
 @JsonPropertyOrder({ "orderId", "memberId", "showtimeId", "originalAmount",
-	"discountAmount", "totalAmount", "orderTime", "tickets" })
+	"discountAmount", "totalAmount","movieTitle", "hallName","showDate","startTime" ,"orderTime", "tickets" })
 @Data
 public class OrdersResponse {
 
@@ -21,6 +24,12 @@ public class OrdersResponse {
 	private Integer totalAmount;
 	private LocalDateTime orderTime;
 	private List<TicketResponse> tickets;
+	
+	//我的訂單用
+	private String movieTitle;
+	private String hallName;
+	private LocalDate showDate;
+	private LocalTime startTime;
 
 	public static OrdersResponse from(Orders o)
 	{
@@ -36,6 +45,13 @@ public class OrdersResponse {
 				.stream()
 				.map(TicketResponse::from)
 				.toList());
+		
+		//我的訂單用
+		ShowTime s = o.getShowtime();
+		res.setMovieTitle(s.getMovie().getTitle());
+		res.setHallName(s.getHall().getHallName());
+		res.setShowDate(s.getShowDate());
+		res.setStartTime(s.getStartTime());
 		return res;
 	}
 }

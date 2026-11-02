@@ -406,6 +406,30 @@
           }
         },
         {
+          "name": "今天以後的場次（購票人）",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/showtime/upcoming?movieId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "showtime",
+                "upcoming"
+              ],
+              "query": [
+                {
+                  "key": "movieId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "單一場次",
           "request": {
             "method": "GET",
@@ -997,6 +1021,70 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"wang01\",\n  \"password\": \"Abc12345\",\n  \"name\": \"王小明\",\n  \"phone\": \"0912345678\",\n  \"email\": \"wang01@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "會員登入",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/member/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "member",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"wang01\",\n  \"password\": \"Abc12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "會員登入 - 密碼錯誤（401）",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/member/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "member",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"wang01\",\n  \"password\": \"wrong\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -1,5 +1,7 @@
 package com.example.movie.dao;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,5 +132,14 @@ public class ShowtimeService {
 		{
 			throw new IllegalArgumentException("放映日期不能早於上映日期：" + movie.getReleaseDate());
 		}
+	}
+	
+	// 購票人：某部電影今天以後的場次，依日期、開演時間排序
+	@Transactional(readOnly = true)
+	public List<ShowTime> findUpcomingByMovieId(Integer movieId)
+	{
+		return showtimeRepository
+				.findByMovieIdAndShowDateGreaterThanEqualOrderByShowDateAscStartTimeAsc(
+						movieId, LocalDate.now());
 	}
 }

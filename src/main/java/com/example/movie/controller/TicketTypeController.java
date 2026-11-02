@@ -43,7 +43,7 @@ public class TicketTypeController {
 		return ResponseEntity.ok(PageResponse.from(result));
 	}
 
-	// GET /api/ticket-type/1 → 單一票種（找不到 → 404）
+	// GET /api/ticket-type/1
 	@GetMapping("/{id}")
 	public ResponseEntity<TicketTypeResponse> findById(@PathVariable Integer id)
 	{

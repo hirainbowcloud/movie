@@ -59,7 +59,7 @@ public class Orders {
 	@Column(name = "original_amount", nullable = false)
 	private Integer originalAmount;
 
-	// 折扣金額（原價小計 - 實收金額）
+	// 折扣金額（原價小計 - 實收金額小計）
 	@Column(name = "discount_amount", nullable = false)
 	private Integer discountAmount;
 
@@ -67,8 +67,8 @@ public class Orders {
 	@Column(name = "total_amount", nullable = false)
 	private Integer totalAmount;
 
-	// 下單時間
-	@Column(name = "order_time", nullable = false)
+	// 下單時間,時間由資料庫產生
+	@Column(name = "order_time", nullable = false, insertable = false, updatable = false)
 	private LocalDateTime orderTime;
 
 	// 一筆訂單有多張票
@@ -80,9 +80,9 @@ public class Orders {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<Ticket> tickets = new ArrayList<>();
 
-	// 新增票：兩邊一起設定，外鍵才會正確存進 DB
+	// 用來把票加進這筆訂單裡
 	public void addTicket(Ticket ticket) {
-		tickets.add(ticket);
-		ticket.setOrder(this);
+		tickets.add(ticket); //把票放進宣告為List<Ticket>物件裡
+		ticket.setOrder(this); //ticket這張票，設定屬於"this"目前這筆訂單物件
 	}
 }

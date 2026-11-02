@@ -21,4 +21,5 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 	
 	@Query(value = "SELECT a FROM Admin a WHERE a.username LIKE CONCAT('%', :keyword, '%') OR a.name LIKE CONCAT('%', :keyword, '%')")
 	Page<Admin> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+	
 }
