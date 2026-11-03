@@ -33,6 +33,6 @@ public class TicketService {
 	// 某個場次已售出的座位（畫座位圖用）
 	public List<Ticket> findByShowtimeId(Integer showtimeId)
 	{
-		return ticketRepository.findByShowtimeIdOrderByRowNoAscSeatNoAsc(showtimeId);
+		return ticketRepository.findSoldSeats(showtimeId);
 	}
 }

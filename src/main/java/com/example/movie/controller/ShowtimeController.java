@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.movie.dao.ShowtimeService;
+import com.example.movie.dao.TicketService;
 import com.example.movie.dto.PageResponse;
+import com.example.movie.dto.SeatMapResponse;
 import com.example.movie.dto.ShowtimeRequest;
 import com.example.movie.dto.ShowtimeResponse;
 import com.example.movie.model.ShowTime;
+import com.example.movie.model.Ticket;
 
 import jakarta.validation.Valid;
 
@@ -30,6 +33,9 @@ public class ShowtimeController {
 
 	@Autowired
 	ShowtimeService showtimeSrv;
+
+	@Autowired
+	TicketService ticketSrv;   // 座位圖用：查這個場次已售出的票
 
 	// GET /api/showtime?page=1&size=10            → 全部場次（分頁）
 	// GET /api/showtime?movieId=1&page=1&size=10  → 某部電影的場次
@@ -93,5 +99,15 @@ public class ShowtimeController {
 				.map(ShowtimeResponse::from)
 				.toList();
 		return ResponseEntity.ok(result);
+	}
+
+	// GET /api/showtime/1/seats → 座位圖：場次、影廳，以及每個座位的狀態（SOLD 已售出 / AVAILABLE 未售出）
+	// 場次不存在 → 404
+	@GetMapping("/{id}/seats")
+	public ResponseEntity<SeatMapResponse> seats(@PathVariable Integer id)
+	{
+		ShowTime s = showtimeSrv.findById(id);                // 找不到會丟 ShowtimeNotFoundException → 404
+		List<Ticket> sold = ticketSrv.findByShowtimeId(id);   // 這個場次已售出的票，沒有就是空清單
+		return ResponseEntity.ok(SeatMapResponse.from(s, sold));
 	}
 }

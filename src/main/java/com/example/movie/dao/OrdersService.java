@@ -126,8 +126,14 @@ public class OrdersService {
 				throw new IllegalArgumentException("座位重複：第" + item.getRowNo() + "排第" + item.getSeatNo() + "號");
 			}
 
-			if (ticketRepository.existsByShowtimeIdAndRowNoAndSeatNo(
-					showtime.getShowtimeId(), item.getRowNo(), item.getSeatNo()))
+			/*
+			 * if (ticketRepository.existsByShowtimeIdAndRowNoAndSeatNo(
+			 * showtime.getShowtimeId(), item.getRowNo(), item.getSeatNo())) { throw new
+			 * IllegalArgumentException("座位已售出：第" + item.getRowNo() + "排第" +
+			 * item.getSeatNo() + "號"); }
+			 */
+			
+			if (ticketRepository.countSoldSeat(showtime.getShowtimeId(), item.getRowNo(), item.getSeatNo()) > 0)
 			{
 				throw new IllegalArgumentException("座位已售出：第" + item.getRowNo() + "排第" + item.getSeatNo() + "號");
 			}

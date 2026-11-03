@@ -1,0 +1,208 @@
+.loading {
+  padding: 40px;
+  text-align: center;
+}
+
+.booking-container {
+  background-color: #f5f6f8;
+  border-radius: 16px;
+  padding: 30px 40px;
+  max-width: 960px;
+  margin: 30px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.booking-header {
+  margin: 0 0 6px 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.booking-info {
+  margin: 0 0 25px 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.main-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.left-section {
+  flex: 1;
+}
+
+/* 銀幕 */
+.screen-container {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.screen-bar {
+  height: 6px;
+  background-color: #9ca3af;
+  border-radius: 3px;
+  width: 85%;
+  margin: 0 auto 8px auto;
+}
+
+.screen-text {
+  color: #9ca3af;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* 座位區：每排置中，後排座位較多會呈現梯形 */
+.seat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.row-label {
+  width: 20px;
+  font-size: 12px;
+  color: #94a3b8;
+  text-align: right;
+  margin-right: 4px;
+}
+
+.seat {
+  width: 26px;
+  height: 22px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* 未售 */
+.available {
+  background-color: #ffffff;
+  border: 1.5px solid #d1d5db;
+}
+
+.seat.available:hover {
+  border-color: #1d63ed;
+}
+
+/* 已選（預訂） */
+.selected {
+  background-color: #1d63ed;
+  border: 1.5px solid #1d63ed;
+}
+
+/* 已售出 */
+.sold {
+  background-color: #cbd5e1;
+  border: 1.5px solid #cbd5e1;
+}
+
+.seat.sold {
+  cursor: not-allowed;
+}
+
+/* 圖例 */
+.legend-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+/* 右側卡片 */
+.card {
+  width: 290px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+}
+
+.card-title {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.seat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 80px;
+  margin-bottom: 20px;
+}
+
+.hint {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.seat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  color: #334155;
+}
+
+.seat-list-item select {
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 15px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.confirm-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1d63ed;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}

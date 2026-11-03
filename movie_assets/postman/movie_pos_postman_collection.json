@@ -1,6 +1,7 @@
 {
   "info": {
-    "name": "movie_pos 電影購票系統",
+    "_postman_id": "98a5e88d-cc13-4a6a-b9af-148e1627b453",
+    "name": "movie_pos 電影購票系統 2026-11-03",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -443,6 +444,25 @@
                 "api",
                 "showtime",
                 "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "座位圖（每個座位已售出 / 未售出）",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/showtime/1/seats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "showtime",
+                "1",
+                "seats"
               ]
             }
           }
