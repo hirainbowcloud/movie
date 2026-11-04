@@ -30,7 +30,7 @@ public class TicketService {
 		return ticketRepository.findByOrderIdOrderByTicketId(orderId);
 	}
 
-	// 某個場次已售出的座位（畫座位圖用）
+	// showtime_id 是這個場次的資料。但它搜的是 ticket 表，所以結果就是「這個場次已售出的座位」（畫座位圖用）
 	public List<Ticket> findByShowtimeId(Integer showtimeId)
 	{
 		return ticketRepository.findSoldSeats(showtimeId);

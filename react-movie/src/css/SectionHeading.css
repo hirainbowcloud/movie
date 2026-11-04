@@ -1,0 +1,39 @@
+/* 區塊標題：藍色外框膠囊 + 大標題 */
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--blue-600);
+  color: var(--blue-600);
+}
+
+.section-label {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.section-title {
+  margin: 16px 0 0 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.025em;   /* 大標題字距縮緊，是 Primer 的特色 */
+  line-height: 1.2;
+  color: var(--slate-900);
+}
+
+/* ==================== RWD ==================== */
+@media (max-width: 600px) {
+  .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+}

@@ -8,12 +8,16 @@ import com.example.movie.model.Hall;
 // 規則確定要改時，只要改 seatsInRow() 這一個方法
 public final class SeatRule {
 
-	private SeatRule() {}
+	private SeatRule() {} //外面不能new
 
-	// 第 rowNo 排有幾個座位
+	// 第 rowNo 排有幾個座位(每多1排位子數量+1)
+	// 因為每往後一排多 1 個，所以「第幾排減 1」就是「要多幾個」。
+	// 第一排座位數 + 比第一排多的數量，回傳「這排座位數」	
+	//int rowNo：要查第幾排
+	// 第一廰的第5排有幾個座位?-> SeatsInRow(hall,5), retunr 12
 	public static int seatsInRow(Hall hall, int rowNo)
-	{
-		return hall.getFirstRowSeats() + (rowNo - 1);
+	{		
+		return hall.getFirstRowSeats() + (rowNo - 1); // 每排會增加一個坐位
 	}
 
 	// 整個影廳的座位總數

@@ -1,0 +1,243 @@
+.detail {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 48px 24px 64px 24px;
+}
+
+/* 上半部：左邊深色劇照區、右邊電影資料 */
+.detail-top {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.detail-info {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.detail-title {
+  margin: 0 0 16px 0;
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--slate-900);
+}
+
+.detail-meta {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  color: var(--slate-600);
+}
+
+/* 第一行（分級 · 片長 · 類型）做成藍色小字 */
+.detail-meta:first-of-type {
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--blue-600);
+}
+
+.detail-synopsis {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--slate-200);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--slate-700);
+  white-space: pre-line;   /* 保留簡介裡的換行 */
+}
+
+.detail-trailer {
+  width: 100%;
+  margin-top: 56px;
+  border-radius: var(--radius);
+  background-color: #000000;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- 左邊劇照（深色格線底） ---------- */
+.still-gallery {
+  width: 460px;
+  flex-shrink: 0;              /* 右邊文字很長時，劇照區不要被擠小 */
+  padding: 20px;
+  border-radius: 16px;
+  background-color: var(--slate-900);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.still-viewer {
+  position: relative;          /* 讓箭頭、頁碼可以疊在圖片上 */
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #000000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.still-main {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;         /* 完整顯示，不裁切 */
+  display: block;
+}
+
+.detail-poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
+}
+
+.no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--slate-800);
+  color: var(--slate-400);
+}
+
+.still-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--slate-900);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.still-arrow:hover {
+  background-color: #ffffff;
+  color: var(--blue-600);
+}
+
+.still-arrow.left {
+  left: 10px;
+}
+
+.still-arrow.right {
+  right: 10px;
+}
+
+.still-counter {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.7);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.still-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;            /* 劇照很多時可以左右捲動 */
+}
+
+.still-thumb {
+  width: 80px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  opacity: 0.5;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.still-thumb.active {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--blue-500);
+}
+
+.still-thumb:hover {
+  opacity: 1;
+}
+
+/* ---------- 場次 ---------- */
+.detail .section-heading {
+  margin-top: 64px;
+}
+
+.showtime-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.showtime-button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--slate-200);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, color 0.15s ease;
+}
+
+.showtime-button:hover {
+  box-shadow: inset 0 0 0 1px var(--blue-600);
+  color: var(--blue-600);
+  background-color: var(--blue-50);
+}
+
+/* ==================== RWD ==================== */
+/* 平板以下：劇照在上、電影資料在下 */
+@media (max-width: 900px) {
+  .detail-top {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .still-gallery {
+    width: 100%;
+  }
+
+  .detail-info {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail {
+    padding: 24px 16px 48px 16px;
+  }
+
+  .still-gallery {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .detail-title {
+    font-size: 30px;
+  }
+
+  .detail .section-heading {
+    margin-top: 44px;
+  }
+
+  .showtime-button {
+    flex: 1 1 calc(50% - 6px);   /* 一列兩個場次按鈕 */
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+}

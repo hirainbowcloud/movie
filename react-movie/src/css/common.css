@@ -1,0 +1,172 @@
+/* ==========================================================
+   全站共用樣式（參考 Tailwind「Primer」風格：
+   slate 灰藍色系 + 藍色重點色、深色主視覺、細外框卡片、大標題緊排）
+   顏色都放在 :root 變數，之後要換主色只改這裡
+   ========================================================== */
+:root {
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+
+  --blue-50: #eff6ff;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+
+  --red-50: #fef2f2;
+  --red-600: #dc2626;
+  --green-50: #f0fdf4;
+  --green-700: #15803d;
+
+  --ring: 0 0 0 1px rgba(15, 23, 42, 0.08);                 /* 細外框，取代粗 border */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 4px 10px -6px rgba(15, 23, 42, 0.08);
+  --radius: 8px;
+  --container: 1024px;
+
+  --font: "Inter", "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  color: var(--slate-700);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 內容區：置中、固定最大寬度 */
+.page-container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 56px 24px;
+}
+
+.page-message {
+  padding: 48px;
+  text-align: center;
+  color: var(--slate-500);
+}
+
+.hint {
+  color: var(--slate-400);
+  font-size: 14px;
+}
+
+/* ---------- 按鈕 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--blue-600);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--blue-500);
+}
+
+.btn-outline {
+  background-color: #ffffff;
+  color: var(--blue-600);
+  box-shadow: inset 0 0 0 1px var(--blue-600);
+}
+
+.btn-outline:hover {
+  background-color: var(--blue-50);
+}
+
+.btn-outline-light {
+  background-color: transparent;
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline-light:hover {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- 分頁 ‹ 1 2 › ---------- */
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 40px 0 0 0;
+}
+
+.pager button {
+  min-width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: var(--ring);
+  color: var(--slate-600);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pager button:hover:not(:disabled):not(.active) {
+  color: var(--slate-900);
+  box-shadow: 0 0 0 1px var(--slate-300);
+}
+
+.pager button.active {
+  background-color: var(--blue-600);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.pager button:disabled {
+  color: var(--slate-300);
+  cursor: not-allowed;
+}
+
+/* 深色區塊的格線背景（Primer 主視覺常見的細格線） */
+.grid-pattern {
+  background-color: var(--slate-900);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 圖片不超出容器 */
+img,
+video {
+  max-width: 100%;
+}
+
+/* ==================== RWD ==================== */
+@media (max-width: 600px) {
+  .page-container {
+    padding: 40px 16px;
+  }
+}

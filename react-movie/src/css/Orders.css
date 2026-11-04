@@ -1,0 +1,329 @@
+.orders {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 48px 24px 64px 24px;
+}
+
+.orders-title {
+  margin: 0 0 32px 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--slate-900);
+}
+
+.order-card {
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: var(--ring), var(--shadow-sm);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.order-movie {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--slate-900);
+}
+
+.order-meta {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--slate-500);
+}
+
+.order-right {
+  text-align: right;
+}
+
+.order-right .order-meta:first-child {
+  font-family: var(--font-mono);
+  color: var(--blue-600);
+}
+
+/* ---------- 電影票：白底名片風格，一個座位一張 ---------- */
+.ticket-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ticket {
+  position: relative;
+  display: flex;
+  width: 340px;
+  aspect-ratio: 90 / 54;               /* 名片比例 9cm × 5.4cm */
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow:
+    0 0 0 1px var(--slate-200),
+    0 8px 20px -10px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+  color: var(--slate-600);
+}
+
+/* 左邊藍色細條 */
+.ticket::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
+  background-color: var(--blue-600);
+}
+
+.ticket-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 16px 16px 14px 22px;
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--slate-900);
+}
+
+.ticket-brand img {
+  width: 20px;
+  height: 20px;
+}
+
+.ticket-movie {
+  margin-top: 12px;
+  overflow: hidden;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--slate-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ticket-time {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.ticket-time strong {
+  margin-left: 6px;
+  font-size: 15px;
+  color: var(--slate-900);
+}
+
+.ticket-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.ticket-type {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: var(--blue-50);
+  color: var(--blue-700);
+  font-size: 12px;
+}
+
+/* 右邊票根：和本體之間用虛線 + 上下半圓缺口隔開 */
+.ticket-stub {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  flex-shrink: 0;
+  border-left: 2px dashed var(--slate-200);
+  background-color: var(--slate-50);
+  color: var(--slate-900);
+}
+
+.ticket-stub::before,
+.ticket-stub::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--slate-200);
+}
+
+.ticket-stub::before {
+  top: -9px;
+}
+
+.ticket-stub::after {
+  bottom: -9px;
+}
+
+.stub-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.stub-row,
+.stub-seat {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.stub-row small,
+.stub-seat small {
+  margin-left: 2px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stub-seat {
+  color: var(--blue-600);
+}
+
+.stub-no {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--slate-400);
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--slate-200);
+}
+
+.order-amount {
+  font-size: 15px;
+  color: var(--slate-600);
+}
+
+.order-amount strong {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+.order-discount {
+  font-size: 13px;
+  color: var(--slate-400);
+}
+
+.print-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--blue-600);
+  color: var(--blue-600);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.print-button:hover {
+  background-color: var(--blue-50);
+}
+
+/* 列印：只印被選到的那筆訂單的電影票 */
+@media print {
+  .navbar,
+  .orders-title,
+  .pager,
+  .print-button,
+  .orders.printing .order-card:not(.print-target) {
+    display: none;
+  }
+
+  .order-card {
+    box-shadow: none;
+  }
+
+  .order-header,
+  .order-footer {
+    display: none;
+  }
+
+  .ticket-list {
+    gap: 6mm;
+  }
+
+  /* 列印成真正的名片大小 9cm × 5.4cm */
+  .ticket {
+    width: 90mm;
+    height: 54mm;
+    aspect-ratio: auto;
+    break-inside: avoid;                 /* 一張票不要被切到兩頁 */
+    box-shadow: 0 0 0 0.3mm #cbd5e1;     /* 印出細框當裁切線 */
+    -webkit-print-color-adjust: exact;   /* 列印時保留藍色條和底色 */
+    print-color-adjust: exact;
+  }
+}
+
+/* ==================== RWD ==================== */
+@media (max-width: 600px) {
+  .orders {
+    padding: 24px 16px 48px 16px;
+  }
+
+  .orders-title {
+    font-size: 26px;
+    margin-bottom: 24px;
+  }
+
+  .order-card {
+    padding: 18px;
+  }
+
+  /* 訂單資訊改上下排 */
+  .order-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .order-right {
+    text-align: left;
+  }
+
+  .ticket {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .order-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .print-button {
+    width: 100%;
+  }
+}

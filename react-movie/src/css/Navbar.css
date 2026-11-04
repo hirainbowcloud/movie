@@ -1,0 +1,110 @@
+/* 導覽列：黏在頂端、半透明白底、下方細線 */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  /* 左右留白讓內容對齊 1024px 的內容區 */
+  padding: 0 max(24px, calc((100% - var(--container)) / 2 + 24px));
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 var(--slate-200);
+}
+
+.navbar a {
+  text-decoration: none;
+}
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--slate-900);
+}
+
+/* Logo 圖示（public/logo.svg） */
+.navbar-logo {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.navbar-links a {
+  color: var(--slate-600);
+}
+
+.navbar-links a:hover {
+  color: var(--slate-900);
+}
+
+/* 「登入」做成藍色小按鈕 */
+.navbar-links a[href="/login"] {
+  padding: 6px 14px;
+  border-radius: 6px;
+  background-color: var(--blue-600);
+  color: #ffffff;
+}
+
+.navbar-links a[href="/login"]:hover {
+  background-color: var(--blue-500);
+}
+
+.navbar-user {
+  color: var(--slate-900);
+}
+
+.navbar-logout {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate-500);
+  cursor: pointer;
+}
+
+.navbar-logout:hover {
+  color: var(--blue-600);
+}
+
+/* ==================== RWD ==================== */
+@media (max-width: 600px) {
+  .navbar {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .navbar-brand {
+    font-size: 15px;
+  }
+
+  .navbar-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .navbar-links {
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  /* 手機上不顯示會員名字，留空間給按鈕 */
+  .navbar-user {
+    display: none;
+  }
+}

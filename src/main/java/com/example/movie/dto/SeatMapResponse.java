@@ -32,7 +32,7 @@ public record SeatMapResponse(
 	// s：場次；soldTickets：這個場次已售出的票
 	public static SeatMapResponse from(ShowTime s, List<Ticket> soldTickets)
 	{
-		Hall hall = s.getHall();
+		Hall hall = s.getHall(); //取全影聽Obj
 
 		// 已售出的座位，例如 "5-3" 代表第 5 排第 3 號
 		Set<String> soldKeys = new HashSet<>();
@@ -42,17 +42,19 @@ public record SeatMapResponse(
 		}
 
 		// 依影廳大小列出每一個座位，有在 soldKeys 裡就是已售出
-		List<SeatStatusResponse> seats = new ArrayList<>();
-		int soldCount = 0;
+		List<SeatStatusResponse> seats = new ArrayList<>(); // 每個座位的結果
+		int soldCount = 0; // 計數器，記錄已售出幾個
 		for (int row = 1; row <= hall.getRowCount(); row++)
 		{
+			//SeatRule.seatsInRow(hall, row)每排幾個位子
 			for (int seat = 1; seat <= SeatRule.seatsInRow(hall, row); seat++)
 			{
 				boolean sold = soldKeys.contains(row + "-" + seat);
 				if (sold)
 				{
-					soldCount++;
+					soldCount++; // 已售出位子的加總數量
 				}
+				//這加上售出、未售出
 				seats.add(new SeatStatusResponse(row, seat,
 						sold ? SeatStatusResponse.SOLD : SeatStatusResponse.AVAILABLE));
 			}
@@ -68,9 +70,9 @@ public record SeatMapResponse(
 				hall.getHallName(),
 				hall.getRowCount(),
 				hall.getFirstRowSeats(),
-				seats.size(),
-				soldCount,
-				seats.size() - soldCount,
-				seats);
+				seats.size(),            // 總座位數 125
+				soldCount,               // 已售出 2
+				seats.size() - soldCount,// 未售出 123
+				seats);                  // 每個座位的清單
 	}
 }

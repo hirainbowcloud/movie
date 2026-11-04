@@ -107,7 +107,7 @@ public class ShowtimeController {
 	public ResponseEntity<SeatMapResponse> seats(@PathVariable Integer id)
 	{
 		ShowTime s = showtimeSrv.findById(id);                // 找不到會丟 ShowtimeNotFoundException → 404
-		List<Ticket> sold = ticketSrv.findByShowtimeId(id);   // 這個場次已售出的票，沒有就是空清單
-		return ResponseEntity.ok(SeatMapResponse.from(s, sold));
+		List<Ticket> sold = ticketSrv.findByShowtimeId(id);   // showtime_id 是這個場次的資料。但它搜的是 ticket 表，所以結果就是「這個場次已售出的座位」
+		return ResponseEntity.ok(SeatMapResponse.from(s, sold)); //SeatMapResponse轉換，搜尋某場次全部坐位
 	}
 }
