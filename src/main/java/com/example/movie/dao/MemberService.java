@@ -57,6 +57,16 @@ public class MemberService {
 	        {
 	            m.setPassword(PasswordUtil.sha256(req.getPassword()));
 	        }
+	        if(rep.existsByUsername(req.getUsername()))
+			{
+				throw new UsernameAlreadyExistsException(req.getUsername());
+			}
+	        if (req.getName() != null) {
+                m.setName(req.getName());
+            }
+            if (req.getPhone() != null) {
+                m.setPhone(req.getPhone());
+            }
 	        return rep.save(m);
 	    });
 	}
